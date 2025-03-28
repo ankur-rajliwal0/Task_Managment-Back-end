@@ -24,9 +24,9 @@ async function verifyToken(req, res, next) {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    
     // Attach user to request object
-    req.user = decoded;
+    req.user = user;
     next();
   } catch (error) {
     // Handle specific JWT errors

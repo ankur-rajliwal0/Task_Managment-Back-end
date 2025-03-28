@@ -1,16 +1,16 @@
-// Middleware to verify admin email
-const verifyAdmin = (req, res, next) => {
-    const { email } = req.body;
-    
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required' });
-    }
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
-    if (email === 'admin@gmail.com') {
-        next(); 
-    } else {
-        return res.status(403).json({ message: 'Access denied. Not an admin' });
-    }
+const verifyAdmin = (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(403).json({ message: "No token provided" });
+
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) return res.status(401).json({ message: "Unauthorized" });
+    req.user = decoded;
+    next();
+  });
 };
 
 module.exports = verifyAdmin;
