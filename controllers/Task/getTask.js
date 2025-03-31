@@ -2,7 +2,7 @@ const Task = require("../../models/Task.js");
 
 async function getUserTasks(req, res) {
   try {
-    // Ensure the user is authenticated
+   
     if (!req.user || !req.user._id) {
       return res.status(400).json({ error: "User ID missing in request" });
     }
